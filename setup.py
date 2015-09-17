@@ -19,7 +19,7 @@ long_description = (
 
 setup(
     name='collective.isotope',
-    version='0.1',
+    version='0.1-dev',
     description="A view for folders and collections using the Isotope jquery plugin",
     long_description=long_description,
     # Get more from http://pypi.python.org/pypi?%3Aaction=list_classifiers

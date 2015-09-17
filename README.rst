@@ -6,25 +6,32 @@
 collective.isotope
 ==============================================================================
 
-Tell me what your product does
+This package provides selectable views for Collections and Folders using the
+`isotope`_ javascript library.
+
+.. _isotope: http://isotope.metafizzy.co/
+
+.. warning:: This package is NOT READY FOR PRODUCTION IN ANY WAY!
+
+
 
 Features
 --------
 
-- Can be bullet points
+- None so far (early pre-alpha)
 
 
 Examples
 --------
 
 This add-on can be seen in action at the following sites:
-- Is there a page on the internet where everybody can see the features?
+- No live sites use this add-on as yet, but soon some will.
 
 
 Documentation
 -------------
 
-Full documentation for end users can be found in the "docs" folder, and is also available online at http://docs.plone.org/foo/bar
+This add-on does not have any documentation yet.  It will soon, though.
 
 
 Translations
@@ -32,7 +39,7 @@ Translations
 
 This product has been translated into
 
-- Klingon (thanks, K'Plai)
+- No translations yet
 
 
 Installation
@@ -56,14 +63,14 @@ Contribute
 
 - Issue Tracker: https://github.com/collective/collective.isotope/issues
 - Source Code: https://github.com/collective/collective.isotope
-- Documentation: https://docs.plone.org/foo/bar
+- Documentation: None yet.
 
 
 Support
 -------
 
-If you are having issues, please let us know.
-We have a mailing list located at: project@example.com
+If you are having issues, please open an issue in our tracker.  And remember
+that this is early alpha software and not suitable for any use whatsoever.
 
 
 License

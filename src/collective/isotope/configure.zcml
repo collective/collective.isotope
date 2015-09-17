@@ -1,0 +1,45 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="collective.isotope">
+
+  <includeDependencies package="." />
+
+  <i18n:registerTranslations directory="locales" />
+
+  <include package=".browser" />
+
+
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.isotope"
+      directory="profiles/default"
+      description="Installs the collective.isotope add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:importStep
+      name="collective.isotope-postInstall"
+      title="collective.isotope post_install import step"
+      description="Post install import step from collective.isotope"
+      handler=".setuphandlers.post_install">
+  </genericsetup:importStep>
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.isotope"
+      directory="profiles/uninstall"
+      description="Uninstalls the collective.isotope add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:importStep
+      name="collective.isotope-uninstall"
+      title="collective.isotope uninstall import step"
+      description="Import step run during ininstalling collective.isotope"
+      handler=".setuphandlers.uninstall">
+  </genericsetup:importStep>
+
+</configure>

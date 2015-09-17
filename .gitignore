@@ -1,6 +1,7 @@
 *.egg-info
 *.mo
 *.pyc
+*.pyo
 .installed.cfg
 .mr.developer.cfg
 .project

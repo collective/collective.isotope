@@ -1,0 +1,52 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="collective.isotope">
+
+  <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
+  <include package="z3c.jbot" file="meta.zcml" />
+  <browser:jbot
+      directory="overrides"
+      layer="collective.isotope.interfaces.ICollectiveIsotopeLayer"
+      />
+
+  <!-- Publish static files -->
+  <browser:resourceDirectory
+      name="collective-isotope"
+      directory="static"
+      />
+
+  <browser:page
+      name="isotope-view"
+      for="plone.app.contenttypes.interfaces.ICollection"
+      class=".views.IsotopeCollectionView"
+      template="templates/isotope.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="isotope-view"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class="plone.app.contenttypes.browser.folder.FolderView"
+      template="templates/isotope.pt"
+      permission="zope2.View"
+      />
+
+  <browser:menuItem
+      for="plone.app.contenttypes.interfaces.ICollection"
+      menu="plone_displayviews"
+      title="Isotope View"
+      action="@@isotope-view"
+      description="Display all items in a filterable tile-based view"
+      />
+
+  <browser:menuItem
+      for="plone.app.contenttypes.interfaces.IFolder"
+      menu="plone_displayviews"
+      title="Isotope View"
+      action="@@isotope-view"
+      description="Display all contents in a filterable tile-based view"
+      />
+
+</configure>

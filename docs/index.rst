@@ -1,0 +1,5 @@
+====================
+collective.isotope
+====================
+
+User documentation

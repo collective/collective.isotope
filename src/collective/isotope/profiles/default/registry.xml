@@ -1,8 +1,12 @@
 <?xml version="1.0"?>
 <registry>
 
+  <records interface="collective.isotope.interfaces.ICollectiveIsotopeSettings">
+    <value key="layout">masonry</value>
+  </records>
+
   <records prefix="plone.resources/collective-isotope"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
      <value key="js">++resource++collective-isotope/isotope.pkgd.js</value>
   </records>
 

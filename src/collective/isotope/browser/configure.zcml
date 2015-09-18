@@ -11,6 +11,14 @@
       layer="collective.isotope.interfaces.ICollectiveIsotopeLayer"
       />
 
+  <!-- Control Panel -->
+  <browser:page
+      name="collective-isotope-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.IsotopeSettingsControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
   <!-- Publish static files -->
   <browser:resourceDirectory
       name="collective-isotope"

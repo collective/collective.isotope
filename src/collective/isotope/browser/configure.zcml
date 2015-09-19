@@ -36,7 +36,7 @@
   <browser:page
       name="isotope-view"
       for="plone.app.contenttypes.interfaces.IFolder"
-      class="plone.app.contenttypes.browser.folder.FolderView"
+      class=".views.IsotopeFolderView"
       template="templates/isotope.pt"
       permission="zope2.View"
       />

@@ -13,6 +13,10 @@
 $(document).ready(function () {
   var options = <tal:vals tal:replace="view/options">{}</tal:vals>
   $("#isotope-grid").isotope(options);
+  $("#filter-wfstate").on('click', 'button', function(evt) {
+    var filterValue = $(this).attr('data-filter');
+    $("#isotope-grid").isotope({filter: filterValue});
+  });
 });
 </script>
 </metal:block>
@@ -34,14 +38,33 @@ $(document).ready(function () {
                          layout_class view/layout_class">
       <tal:listing condition="results">
 
+        <div id="filter-wfstate" class="button-container">
+          <div class="plone-button-group pull-right">
+            <button data-filter="*">All</button>
+            <button data-filter=".state-published">Published</button>
+            <button data-filter=".state-private">Private</button>
+          </div>
+        </div>
+        <div style="clear:both">&nbsp;</div>
         <div id="isotope-grid" metal:define-slot="entries">
           <tal:repeat repeat="item results" metal:define-macro="entries">
-            <a href="" tal:attributes="href item/getURL">
-              <article class="isotope-item" tal:attributes="class string:isotope-item ${layout_class}">
-                <h3 tal:content="item/Title">[title]</h3>
-                <p class="discreet" tal:content="item/Description">[description]</p>
-              </article>
-            </a>
+            <tal:definitions tal:define="item_url item/getURL;
+                                         item_type item/PortalType;
+                                         item_icon item/getIcon;
+                                         item_type_class python:'contenttype-' + view.normalizeString(item_type);
+                                         item_wf_state item/review_state;
+                                         item_wf_state_class python:'state-' + view.normalizeString(item_wf_state);
+                                         item_link python:item_type in view.use_view_action and item_url+'/view' or item_url;
+                                         item_has_image python:view.has_image(item);">
+              <a href="" tal:attributes="href item_link;
+                                         class item_wf_state_class">
+                <article class="isotope-item" tal:attributes="class string:isotope-item $layout_class $item_wf_state_class">
+                  <h3 tal:content="item/Title">[title]</h3>
+                  <p class="discreet" tal:content="item/Description">[description]</p>
+                  <p tal:condition="item_has_image">HAS IMAGE</p>
+                </article>
+              </a>
+            </tal:definitions>
           </tal:repeat>
         </div>
 

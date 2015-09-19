@@ -1,0 +1,34 @@
+#isotope-grid {
+    position:relative;
+}
+#isotope-grid .vertical {
+    width: 100%;
+    padding: 0em 1em;
+}
+#isotope-grid .vertical:hover {
+    background-color: #eee;
+}
+#isotope-grid .horizontal {
+    width: 47%;
+    text-align: center;
+    background-color: #333;
+    color: white;
+    border: 1px solid black;
+    padding: 1em;
+    margin: 1%;
+}
+#isotope-grid .horizontal:hover {
+    background-color: #111;
+}
+
+@media (min-width: 768px) {
+    #isotope-grid .horizontal {
+        width: 30%;
+    }
+}
+
+@media (min-width: 1200px) {
+    #isotope-grid .horizontal {
+        width: 17%;
+    }
+}

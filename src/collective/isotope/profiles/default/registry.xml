@@ -2,12 +2,16 @@
 <registry>
 
   <records interface="collective.isotope.interfaces.ICollectiveIsotopeSettings">
-    <value key="layout">masonry</value>
+    <value key="layoutMode">masonry</value>
+    <value key="percentPosition">True</value>
   </records>
 
   <records prefix="plone.resources/collective-isotope"
            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-     <value key="js">++resource++collective-isotope/isotope.pkgd.js</value>
+    <value key="js">++resource++collective-isotope/isotope.pkgd.js</value>
+    <value key="css">
+      <element>++resource++collective-isotope/isotope-display.less</element>
+    </value>
   </records>
 
   <!-- create a bundle definition -->
@@ -20,6 +24,7 @@
     <value key="compile">False</value>
     <value key="enabled">True</value>
     <value key="jscompilation">++plone++collective-isotope/isotope.pkgd.min.js</value>
+    <value key="csscompilation">++plone++collective-isotope/isotope-display.css</value>
     <value key="last_compilation">2015-05-28 00:00:00</value>
   </records>
 

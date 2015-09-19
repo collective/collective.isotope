@@ -18,10 +18,18 @@ class ICollectiveIsotopeSettings(Interface):
     Settings control options for the Isotope Library
     """
 
-    layout = schema.Choice(
-        title=_(u'Layout'),
-        description=_(u'Select the default layout scheme to be used throughout'
-                      u' your website'),
-        values=[u'masonry', u'packery', u'fitRows', u'vertical'],
+    layoutMode = schema.Choice(
+        title=_(u'Layout Mode'),
+        description=_(u'Select the default layout mode to be used on all '
+                      u'isotope views throughout your website'),
+        values=[u'masonry', u'fitRows', u'vertical'],
         default=u'masonry'
+    )
+
+    percentPosition = schema.Bool(
+        title=_(u'Use percentPosition'),
+        description=_(u'Set the horizontal position of items by percent '
+                      u'rather than pixel size. This works best with items '
+                      u'that are sized by percentage. On by default'),
+        default=True
     )

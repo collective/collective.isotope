@@ -7,6 +7,17 @@
     i18n:domain="plone">
 <body>
 
+<metal:js fill-slot="javascript_head_slot">
+<metal:block define-macro="javascript_head_slot">
+<script>
+$(document).ready(function () {
+  var options = <tal:vals tal:replace="view/options">{}</tal:vals>
+  $("#isotope-grid").isotope(options);
+});
+</script>
+</metal:block>
+</metal:js>
+
 <metal:content-core fill-slot="content-core">
 <metal:block define-macro="content-core">
 
@@ -19,15 +30,18 @@
   </div>
 
   <metal:listingmacro define-macro="listing">
-    <tal:results define="results view/results">
+    <tal:results define="results view/results;
+                         layout_class view/layout_class">
       <tal:listing condition="results">
 
-        <div class="grid js-isotope" metal:define-slot="entries" data-isotope-options='{"layoutMode": "masonry", "itemSelector": ".item", "percentPosition": true}'>
+        <div id="isotope-grid" metal:define-slot="entries">
           <tal:repeat repeat="item results" metal:define-macro="entries">
-            <div class="item" style="width:26%;text-align:center;background-color:#333333;color:white;border:1px solid red;padding:1em;margin:.5em;">
-              <h3 tal:content="item/Title">[title]</h3>
-              <p class="discreet" tal:content="item/Description">[description]</p>
-            </div>
+            <a href="" tal:attributes="href item/getURL">
+              <article class="isotope-item" tal:attributes="class string:isotope-item ${layout_class}">
+                <h3 tal:content="item/Title">[title]</h3>
+                <p class="discreet" tal:content="item/Description">[description]</p>
+              </article>
+            </a>
           </tal:repeat>
         </div>
 

@@ -19,3 +19,5 @@ htmlcov/
 *.log
 output.xml
 *.swp
+*.sublime-project
+*.sublime-workspace

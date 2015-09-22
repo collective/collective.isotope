@@ -41,11 +41,13 @@ $(document).ready(function () {
         <div id="filter-wfstate" class="button-container">
           <div class="plone-button-group pull-right">
             <button data-filter="*">All</button>
-            <button data-filter=".state-published">Published</button>
-            <button data-filter=".state-private">Private</button>
+            <button data-filter=".published">Published</button>
+            <button data-filter=".private">Private</button>
           </div>
         </div>
         <div style="clear:both">&nbsp;</div>
+        <p tal:content="view/filters">[filters]</p>
+        <p tal:content="view/sorts">[sorts]</p>
         <div id="isotope-grid" metal:define-slot="entries">
           <tal:repeat repeat="item results" metal:define-macro="entries">
             <tal:definitions tal:define="item_url item/getURL;
@@ -55,10 +57,12 @@ $(document).ready(function () {
                                          item_wf_state item/review_state;
                                          item_wf_state_class python:'state-' + view.normalizeString(item_wf_state);
                                          item_link python:item_type in view.use_view_action and item_url+'/view' or item_url;
-                                         item_has_image python:view.has_image(item);">
+                                         item_has_image python:view.has_image(item);
+                                         filter_class python:view.filters_for_item(item);
+                                         ">
               <a href="" tal:attributes="href item_link;
                                          class item_wf_state_class">
-                <article class="isotope-item" tal:attributes="class string:isotope-item $layout_class $item_wf_state_class">
+                <article class="isotope-item" tal:attributes="class string:isotope-item $layout_class $filter_class">
                   <h3 tal:content="item/Title">[title]</h3>
                   <p class="discreet" tal:content="item/Description">[description]</p>
                   <p tal:condition="item_has_image">HAS IMAGE</p>

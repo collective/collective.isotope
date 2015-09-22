@@ -25,6 +25,7 @@
       directory="static"
       />
 
+  <!-- Isotope View -->
   <browser:page
       name="isotope-view"
       for="plone.app.contenttypes.interfaces.ICollection"
@@ -32,7 +33,6 @@
       template="templates/isotope.pt"
       permission="zope2.View"
       />
-
   <browser:page
       name="isotope-view"
       for="plone.app.contenttypes.interfaces.IFolder"
@@ -41,6 +41,7 @@
       permission="zope2.View"
       />
 
+  <!-- Display Menu Item -->
   <browser:menuItem
       for="plone.app.contenttypes.interfaces.ICollection"
       menu="plone_displayviews"
@@ -55,6 +56,20 @@
       title="Isotope View"
       action="@@isotope-view"
       description="Display all contents in a filterable tile-based view"
+      />
+
+  <!-- View Configuration Form -->
+  <browser:page
+      for="plone.app.contenttypes.interfaces.ICollection"
+      name="isotope-config"
+      class=".views.IsotopeConfigurationView"
+      permission="cmf.ModifyPortalContent"
+      />
+  <browser:page
+      for="plone.app.contenttypes.interfaces.IFolder"
+      name="isotope-config"
+      class=".views.IsotopeConfigurationView"
+      permission="cmf.ModifyPortalContent"
       />
 
 </configure>

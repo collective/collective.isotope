@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<object name="portal_actions" meta_type="Plone Actions Tool"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <object name="object" meta_type="CMF Action Category">
+  <object name="collective_isotope_view_configuration" meta_type="CMF Action">
+   <property name="title">Isotope</property>
+   <property
+      name="description">Configure the Isotope layout for this item</property>
+   <property
+      name="url_expr">string:${object_url}/@@isotope-config</property>
+   <property name="link_target"></property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr">python: getattr(context, 'layout', '') == 'isotope-view'</property>
+   <property name="permissions">
+    <element value="Modify portal content"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
+</object>

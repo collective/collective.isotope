@@ -4,6 +4,14 @@
   <records interface="collective.isotope.interfaces.ICollectiveIsotopeSettings">
     <value key="layoutMode">masonry</value>
     <value key="percentPosition">True</value>
+    <value key="filter_whitelist">
+      <element>Type</element>
+      <element>review_state</element>
+    </value>
+    <value key="sorting_whitelist">
+      <element>Date</element>
+      <element>Title</element>
+    </value>
   </records>
 
   <records prefix="plone.resources/collective-isotope"

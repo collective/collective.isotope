@@ -11,6 +11,26 @@
 
   <include package=".browser" />
 
+  <utility
+      name="collective.isotope.vocabularies.filter_columns"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component="collective.isotope.vocabularies.FilterColumnVocabularyFactory"
+      />
+  <utility
+      name="collective.isotope.vocabularies.sort_columns"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component="collective.isotope.vocabularies.SortColumnVocabularyFactory"
+      />
+  <utility
+      name="collective.isotope.vocabularies.available_filters"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component="collective.isotope.vocabularies.FiltersVocabularyFactory"
+      />
+  <utility
+      name="collective.isotope.vocabularies.available_sorts"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component="collective.isotope.vocabularies.SortsVocabularyFactory"
+      />
 
   <genericsetup:registerProfile
       name="default"

@@ -11,7 +11,7 @@
    <property name="link_target"></property>
    <property name="icon_expr"></property>
    <property
-      name="available_expr">python: context.layout == 'isotope-view'</property>
+      name="available_expr">python: getattr(context, 'layout', '') == 'isotope-view'</property>
    <property name="permissions">
     <element value="Modify portal content"/>
    </property>

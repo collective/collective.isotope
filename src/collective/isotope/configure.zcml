@@ -11,15 +11,11 @@
 
   <include package=".browser" />
 
+  <!-- control panel vocabularies -->
   <utility
-      name="collective.isotope.vocabularies.filter_columns"
+      name="collective.isotope.vocabularies.friendly_columns"
       provides="zope.schema.interfaces.IVocabularyFactory"
-      component="collective.isotope.vocabularies.FilterColumnVocabularyFactory"
-      />
-  <utility
-      name="collective.isotope.vocabularies.sort_columns"
-      provides="zope.schema.interfaces.IVocabularyFactory"
-      component="collective.isotope.vocabularies.SortColumnVocabularyFactory"
+      component="collective.isotope.vocabularies.FriendlyColumnVocabularyFactory"
       />
   <utility
       name="collective.isotope.vocabularies.available_filters"
@@ -32,6 +28,14 @@
       component="collective.isotope.vocabularies.SortsVocabularyFactory"
       />
 
+  <!-- column value converter utilities -->
+  <utility
+      name="collective.isotope.converter.creator"
+      provides="collective.isotope.interfaces.IValueConverter"
+      factory="collective.isotope.utilities.CreatorConverter"
+      />
+
+  <!-- GS Profile and upgrades -->
   <genericsetup:registerProfile
       name="default"
       title="collective.isotope"

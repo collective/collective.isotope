@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 """Interfaces: control panel settings, browser layers &c."""
-
-from zope.interface import Interface
+from collective.z3cform.datagridfield.registry import DictRow
+from collective.z3cform.datagridfield.interfaces import AttributeNotFoundError
+from plone.registry import field
+from z3c.form.interfaces import NO_VALUE
+from zope.interface import Interface, implements
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope import schema
+
 
 from collective.isotope import _
 
@@ -12,24 +16,90 @@ class ICollectiveIsotopeLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""
 
 
+class IValueConverter(Interface):
+    """Utility registration interface for Value Converters
+
+    A value converter is responsible for converting the value stored in a
+    metadata column into a human readable value suitable for presentation in a
+    UI.
+    """
+    def convert(value):
+        """Convert a give value into a human readable value
+
+        This method must return a utf-8 encoded byte string
+        """
+
+
+# A DictRow is an IDict for import/export purposes
+class ImportableTextDictRow(DictRow, schema.MinMaxLen):
+    implements(schema.interfaces.IDict)
+    # We treat all values as text for simplicity of import/export.
+    # Unfortunately, non-text values will result in duplicates when
+    # purge="False"
+    key_type = value_type = schema.TextLine()
+
+    def _validate(self, value):
+        if value is NO_VALUE:
+            return
+        errors = []
+        for field_name, field_ in schema.getFields(self.schema).items():
+            if field_name not in value and field_.required:
+                errors.append(AttributeNotFoundError(field_name, self.schema))
+            ftype = getattr(field_, '_type', None)
+            fvalue = value.get(field_name, NO_VALUE)
+            if isinstance(ftype, tuple):
+                ftype = ftype[0]
+            # Perform a naive type coercion
+            if (fvalue is not NO_VALUE and
+                    ftype is not None and not isinstance(fvalue, ftype)):
+                if ftype is bool and fvalue.lower() == 'false':
+                    fvalue = False
+                try:
+                    value[field_name] = ftype(fvalue)
+                except (ValueError, TypeError):
+                    pass
+            if fvalue is not NO_VALUE:
+                field_.validate(fvalue)
+
+        if errors:
+            raise schema.interfaces.WrongContainedType(errors, self.__name__)
+
+
+class IFilterSchema(Interface):
+    column_name=field.Choice(
+        title=_(u'Column Name'),
+        description=_(u'Enter the name of a catalog metadata column'),
+        vocabulary='collective.isotope.vocabularies.friendly_columns',
+        required=False,
+        missing_value=u''
+    )
+    label=field.TextLine(
+        title=_(u'Label'),
+        description=_(u'If desired, enter the human-readable label for this column'),
+        required=False,
+        missing_value=u''
+    )
+
+
 class ICollectiveIsotopeFilterSettings(Interface):
     """Settings to control filtering options"""
-    filter_whitelist = schema.Set(
-        title=_(u'Filter Whitelist'),
-        description=_(u'Select the list of stored values by which items may '
-                      u'be filtered. Individual views will configure one or '
-                      u'more filters from this list'),
-        value_type=schema.Choice(
-            vocabulary='collective.isotope.vocabularies.filter_columns',
+    available_filters = schema.List(
+        title=_(u'Available Filters'),
+        description=_(u'List the filters that will be available for Istotope '
+                      u'views throughout your site.'),
+        value_type=ImportableTextDictRow(
+            title=_(u'Filter'),
+            schema=IFilterSchema
         )
     )
-    sorting_whitelist = schema.Set(
-        title=_(u'Sorting Whitelist'),
-        description=_(u'Select the list of stored values by which items may '
-                      u'be sorted. Individual views will configure one or '
-                      u'more sortings from this list'),
-        value_type=schema.Choice(
-            vocabulary='collective.isotope.vocabularies.sort_columns',
+
+    available_sorts = schema.List(
+        title=_(u'Available Sorts'),
+        description=_(u'List the sortable attributes that will be available '
+                      u'for Istotope views throughout your site.'),
+        value_type=ImportableTextDictRow(
+            title=_(u'Sort'),
+            schema=IFilterSchema
         )
     )
 

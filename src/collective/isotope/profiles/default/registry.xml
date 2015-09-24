@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <registry>
 
-  <records interface="collective.isotope.interfaces.ICollectiveIsotopeSettings">
+  <records interface="collective.isotope.interfaces.ICollectiveIsotopeSettings" purge="false">
     <value key="layoutMode">masonry</value>
     <value key="percentPosition">True</value>
     <value key="available_filters">

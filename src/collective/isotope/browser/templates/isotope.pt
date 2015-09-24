@@ -5,6 +5,11 @@
     lang="en"
     metal:use-macro="context/main_template/macros/master"
     i18n:domain="plone">
+<head>
+      <metal:block fill-slot="top_slot"
+                   tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                               disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+</head>
 <body>
 
 <metal:js fill-slot="javascript_head_slot">
@@ -13,7 +18,7 @@
 $(document).ready(function () {
   var options = <tal:vals tal:replace="view/options">{}</tal:vals>
   $("#isotope-grid").isotope(options);
-  $("#filter-wfstate").on('click', 'button', function(evt) {
+  $("#isotope-filters").on('click', 'button', function(evt) {
     var filterValue = $(this).attr('data-filter');
     $("#isotope-grid").isotope({filter: filterValue});
   });
@@ -35,19 +40,35 @@ $(document).ready(function () {
 
   <metal:listingmacro define-macro="listing">
     <tal:results define="results view/results;
-                         layout_class view/layout_class">
+                         layout_class view/layout_class;
+                         filters view/filters">
       <tal:listing condition="results">
 
-        <div id="filter-wfstate" class="button-container">
-          <div class="plone-button-group pull-right">
-            <button data-filter="*">All</button>
-            <button data-filter=".published">Published</button>
-            <button data-filter=".private">Private</button>
-          </div>
+        <div id="isotope-filters" tal:condition="filters">
+          <tal:filter tal:repeat="filter filters">
+            <div class="button-container"
+                 tal:define="filter_name python:view.normalizer.normalize(filter);
+                             filter_id string:filter-${filter_name};
+                             filter_data python:filters[filter];
+                             filter_label python:filter_data['label'];
+                             filter_values python:filter_data['values']"
+                 tal:attributes="id filter_id">
+              <div class="plone-button-group pull-right">
+                <h5 class="isotope-filter-label" tal:content="filter_label">[label]</h5>
+                <button data-filter="*">All</button>
+               <tal:buttons tal:repeat="button filter_values">
+                <button tal:define="val python:button[0];
+                                    name python:button[1]"
+                        tal:attributes="data-filter string:.${val}"
+                        tal:content="name">[button]</button>
+               </tal:buttons>
+              </div>
+
+            </div>
+          </tal:filter>
+          <div style="clear:both">&nbsp;</div>
         </div>
-        <div style="clear:both">&nbsp;</div>
-        <p tal:content="view/filters">[filters]</p>
-        <p tal:content="view/sorts">[sorts]</p>
+
         <div id="isotope-grid" metal:define-slot="entries">
           <tal:repeat repeat="item results" metal:define-macro="entries">
             <tal:definitions tal:define="item_url item/getURL;
@@ -64,8 +85,19 @@ $(document).ready(function () {
                                          class item_wf_state_class">
                 <article class="isotope-item" tal:attributes="class string:isotope-item $layout_class $filter_class">
                   <h3 tal:content="item/Title">[title]</h3>
-                  <p class="discreet" tal:content="item/Description">[description]</p>
-                  <p tal:condition="item_has_image">HAS IMAGE</p>
+                  <tal:image tal:condition="item_has_image">
+                    <div class="tileImage"
+                         tal:define="obj item/getObject">
+                      <a tal:attributes="href item_link">
+                        <img tal:define="scales obj/@@images;
+                                         scale python:scales.scale('image', 'thumb')"
+                            tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
+                      </a>
+                    </div>
+                  </tal:image>
+                  <tal:no-image tal:condition="not:item_has_image">
+                    <p class="discreet" tal:content="item/Description">[description]</p>
+                  </tal:no-image>
                 </article>
               </a>
             </tal:definitions>

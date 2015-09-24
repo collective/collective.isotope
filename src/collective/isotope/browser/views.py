@@ -13,10 +13,13 @@ from zope.annotation.interfaces import IAnnotations, IAttributeAnnotatable
 from zope.cachedescriptors.property import Lazy as lazy_property
 from zope.cachedescriptors.method import cachedIn
 from zope.component import getUtility, queryUtility
+from zope.schema.interfaces import IVocabularyFactory
 
 from ..interfaces import ICollectiveIsotopeSettings
 from ..interfaces import ICollectiveIsotopeLayoutSettings
 from ..interfaces import ICollectiveIsotopeViewSettings
+from ..interfaces import IValueConverter
+
 from collective.isotope import _
 
 
@@ -52,11 +55,11 @@ class IsotopeViewConfigurationForm(form.Form):
 IsotopeConfigurationView = wrap_form(IsotopeViewConfigurationForm)
 
 
-def call_or_attr(obj, attrname):
-    attr = getattr(obj, attrname, None)
-    if callable(attr):
-        attr = attr()
-    return attr
+def call_or_attr(obj, name):
+    value = getattr(obj, name, None)
+    if callable(value):
+        value = value()
+    return value
 
 
 class IsotopeViewMixin(object):
@@ -85,26 +88,55 @@ class IsotopeViewMixin(object):
     def normalizer(self):
         return queryUtility(IIDNormalizer)
 
+    @lazy_property
     def options(self):
         """return the layout options as configured for this site/view"""
         options = self.settings_dict
         return json.dumps(options)
 
+    @lazy_property
     def filters(self):
-        """return the list of filters to use in this view
+        """return a dict of filter information for this view
 
         This method is dependent on their being a `results` method on the view
         class to which this mixin is added.
+
+
+        for the results in the object viewed, the following will be returned
+        {'column_name': {'label': 'column label',
+                         'values': [
+                                (unique_value, unique_label),
+                                ...
+                         ],
+         'column_name': ...
+        }
         """
         filters = self.configuration.get('filter', [])
         results = {}
         for filter in filters:
-            results[filter] = set([call_or_attr(r, filter) for r in self.results()])
+            all = [call_or_attr(r, filter) for r in self.results()]
+            raw = set([a for a in all if a])
+            # skip filters with less than two unique values
+            if len(raw) < 2:
+                continue
+            converted = self._get_value_labels(filter, raw)
+            values = zip(map(self.normalizer.normalize, raw), converted)
+            label = self._get_filter_label(filter)
+            normalized = self.normalizer.normalize(filter)
+            results[filter] = {
+                'label': label,
+                'values': values,
+            }
         return results
 
     def filters_for_item(self, result):
+        """return a space-separated string of filter names for a single item
+
+        The returned value is used in templates as a CSS class for Isotope
+        filtering
+        """
         filt_vals = []
-        for filter in self.filters():
+        for filter in self.filters:
             val = call_or_attr(result, filter)
             if val:
                 filt_vals.append(self.normalizer.normalize(val))
@@ -119,6 +151,36 @@ class IsotopeViewMixin(object):
         if self.settings_dict.get('layoutMode') == 'vertical':
             klass = 'vertical'
         return klass
+
+    # internal API
+
+    def _get_filter_label(self, column):
+        """return the registered label for a given filter"""
+        return self._get_column_label(column, 'filters')
+
+    def _get_sorts_label(self, column):
+        """return the registered label for a given sort"""
+        return self._get_column_label(column, 'sorts')
+
+    def _get_column_label(self, column, type_):
+        """return the label for a given column name from the named vocabulary"""
+        name = 'collective.isotope.vocabularies.available_{}'.format(type_)
+        factory = queryUtility(IVocabularyFactory, name=name, default=None)
+        if factory is not None:
+            term = factory(self.context).getTerm(column)
+            column = term.title or term.value
+        return column
+
+    def _get_value_labels(self, filter, values):
+        converter_name = 'collective.isotope.converter.{}'.format(
+            self.normalizer.normalize(filter)
+        )
+        converter = queryUtility(
+            IValueConverter, name=converter_name, default=None
+        )
+        if converter:
+            values = map(converter.convert, values)
+        return values
 
 
 class IsotopeCollectionView(IsotopeViewMixin, CollectionView):

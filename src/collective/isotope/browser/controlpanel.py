@@ -1,4 +1,4 @@
-# from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+# -*- coding: utf-8 -*-
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from plone.app.registry.browser import controlpanel
 

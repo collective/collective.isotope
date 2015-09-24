@@ -66,16 +66,18 @@ class ImportableTextDictRow(DictRow, schema.MinMaxLen):
 
 
 class IFilterSchema(Interface):
-    column_name=field.Choice(
+    column_name = field.Choice(
         title=_(u'Column Name'),
         description=_(u'Enter the name of a catalog metadata column'),
         vocabulary='collective.isotope.vocabularies.friendly_columns',
         required=False,
         missing_value=u''
     )
-    label=field.TextLine(
+    label = field.TextLine(
         title=_(u'Label'),
-        description=_(u'If desired, enter the human-readable label for this column'),
+        description=_(
+            u'If desired, enter the human-readable label for this column'
+        ),
         required=False,
         missing_value=u''
     )

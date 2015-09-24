@@ -122,7 +122,6 @@ class IsotopeViewMixin(object):
             converted = self._get_value_labels(filter, raw)
             values = zip(map(self.normalizer.normalize, raw), converted)
             label = self._get_filter_label(filter)
-            normalized = self.normalizer.normalize(filter)
             results[filter] = {
                 'label': label,
                 'values': values,

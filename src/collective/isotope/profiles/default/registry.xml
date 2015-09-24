@@ -4,13 +4,22 @@
   <records interface="collective.isotope.interfaces.ICollectiveIsotopeSettings">
     <value key="layoutMode">masonry</value>
     <value key="percentPosition">True</value>
-    <value key="filter_whitelist">
-      <element>Type</element>
-      <element>review_state</element>
+    <value key="available_filters">
+      <element>
+        <element key="column_name">Type</element>
+      </element>
+      <element>
+        <element key="column_name">review_state</element>
+        <element key="label">Review state</element>
+      </element>
     </value>
-    <value key="sorting_whitelist">
-      <element>Date</element>
-      <element>Title</element>
+    <value key="available_sorts">
+      <element>
+        <element key="column_name">Date</element>
+      </element>
+      <element>
+        <element key="column_name">Title</element>
+      </element>
     </value>
   </records>
 

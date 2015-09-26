@@ -32,7 +32,7 @@
   <utility
       name="collective.isotope.converter.creator"
       provides="collective.isotope.interfaces.IValueConverter"
-      factory="collective.isotope.utilities.CreatorConverter"
+      component="collective.isotope.utilities.creator_converter"
       />
 
   <!-- GS Profile and upgrades -->

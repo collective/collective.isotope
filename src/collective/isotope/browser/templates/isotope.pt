@@ -81,25 +81,27 @@ $(document).ready(function () {
                                          item_has_image python:view.has_image(item);
                                          filter_class python:view.filters_for_item(item);
                                          ">
-              <a href="" tal:attributes="href item_link;
-                                         class item_wf_state_class">
                 <article class="isotope-item" tal:attributes="class string:isotope-item $layout_class $filter_class">
-                  <h3 tal:content="item/Title">[title]</h3>
+                  <a href="" tal:attributes="href item_link;
+                                             class item_wf_state_class">
+                    <h2 tal:content="item/Title">[title]</h2>
+                  </a>
                   <tal:image tal:condition="item_has_image">
-                    <div class="tileImage"
-                         tal:define="obj item/getObject">
-                      <a tal:attributes="href item_link">
-                        <img tal:define="scales obj/@@images;
-                                         scale python:scales.scale('image', 'thumb')"
-                            tal:replace="structure python:scale and scale.tag(css_class='tileImage') or None" />
-                      </a>
-                    </div>
+                    <a tal:attributes="href item_link">
+                      <div class="isotope-image"
+                           tal:define="obj item/getObject">
+                          <img tal:define="scales obj/@@images;
+                                           scale python:scales.scale('image', 'preview')"
+                              tal:replace="structure python:scale and scale.tag(css_class='isotope-image') or None" />
+                      </div>
+                    </a>
                   </tal:image>
                   <tal:no-image tal:condition="not:item_has_image">
-                    <p class="discreet" tal:content="item/Description">[description]</p>
+                    <a tal:attributes="href item_link">
+                      <p class="discreet" tal:content="item/Description">[description]</p>
+                    </a>
                   </tal:no-image>
                 </article>
-              </a>
             </tal:definitions>
           </tal:repeat>
         </div>

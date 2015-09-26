@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Browser views"""
+import collections
+from itertools import chain
 import json
 # from plone import api
 from plone.app.contenttypes.browser.collection import CollectionView
@@ -56,10 +58,30 @@ IsotopeConfigurationView = wrap_form(IsotopeViewConfigurationForm)
 
 
 def call_or_attr(obj, name):
+    """get the value of attribute 'name' from 'obj'
+
+    if 'name' is callable, call it to get the value
+    """
     value = getattr(obj, name, None)
     if callable(value):
         value = value()
     return value
+
+def itemize(value):
+    """return value one item at a time from a generator
+
+    If value is a string type, return it
+    If value is a date type, return it
+    If value is a list, tuple, set, or frozenset, return the contained values one at a time
+    If value is a dict type, return the keys one at a time
+    """
+    if (not isinstance(value, basestring) and
+            isinstance(value, collections.Iterable)):
+        for item in value:
+            yield item
+    else:
+        yield value
+    raise StopIteration
 
 
 class IsotopeViewMixin(object):
@@ -114,7 +136,9 @@ class IsotopeViewMixin(object):
         filters = self.configuration.get('filter', [])
         results = {}
         for filter in filters:
-            all = [call_or_attr(r, filter) for r in self.results()]
+            all = chain(
+                *(itemize(call_or_attr(r, filter)) for r in self.results())
+            )
             raw = set([a for a in all if a])
             # skip filters with less than two unique values
             if len(raw) < 2:
@@ -136,9 +160,9 @@ class IsotopeViewMixin(object):
         """
         filt_vals = []
         for filter in self.filters:
-            val = call_or_attr(result, filter)
-            if val:
-                filt_vals.append(self.normalizer.normalize(val))
+            vals = itemize(call_or_attr(result, filter))
+            if vals:
+                filt_vals.extend(map(self.normalizer.normalize, vals))
         return ' '.join(filt_vals)
 
     def sorts(self):
@@ -178,7 +202,7 @@ class IsotopeViewMixin(object):
             IValueConverter, name=converter_name, default=None
         )
         if converter:
-            values = map(converter.convert, values)
+            values = map(converter, values)
         return values
 
 

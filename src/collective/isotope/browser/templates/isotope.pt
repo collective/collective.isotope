@@ -53,8 +53,8 @@ $(document).ready(function () {
                              filter_label python:filter_data['label'];
                              filter_values python:filter_data['values']"
                  tal:attributes="id filter_id">
-              <div class="plone-button-group pull-right">
-                <h5 class="isotope-filter-label" tal:content="filter_label">[label]</h5>
+              <h5 class="isotope-filter-label" tal:content="filter_label">[label]</h5>
+              <div class="plone-button-group">
                 <button data-filter="*">All</button>
                <tal:buttons tal:repeat="button filter_values">
                 <button tal:define="val python:button[0];

@@ -16,10 +16,11 @@
 <metal:block define-macro="javascript_head_slot">
 <script>
 $(document).ready(function () {
-  var options = <tal:vals tal:replace="view/options">{}</tal:vals>
+  var options = <tal:vals tal:replace="view/options">{}</tal:vals>;
   $("#isotope-grid").isotope(options);
-  $("#isotope-filters").on('click', 'button', function(evt) {
-    var filterValue = $(this).attr('data-filter');
+  $("#isotope-filters").on("change", 'select', function(evt) {
+    var filterValue = evt.val;
+    $('.isotope-filter select').not(this).select2("val", "*");
     $("#isotope-grid").isotope({filter: filterValue});
   });
 });

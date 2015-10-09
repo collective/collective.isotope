@@ -45,28 +45,24 @@ $(document).ready(function () {
       <tal:listing condition="results">
 
         <div id="isotope-filters" tal:condition="filters">
-          <tal:filter tal:repeat="filter filters">
-            <div class="button-container"
-                 tal:define="filter_name python:view.normalizer.normalize(filter);
-                             filter_id string:filter-${filter_name};
-                             filter_data python:filters[filter];
-                             filter_label python:filter_data['label'];
-                             filter_values python:filter_data['values']"
-                 tal:attributes="id filter_id">
-              <h5 class="isotope-filter-label" tal:content="filter_label">[label]</h5>
-              <div class="plone-button-group">
-                <button data-filter="*">All</button>
-               <tal:buttons tal:repeat="button filter_values">
-                <button tal:define="val python:button[0];
-                                    name python:button[1]"
-                        tal:attributes="data-filter string:.${val}"
-                        tal:content="name">[button]</button>
-               </tal:buttons>
-              </div>
-
-            </div>
-          </tal:filter>
-          <div style="clear:both">&nbsp;</div>
+         <tal:filter repeat="filter filters">
+          <div class="isotope-filter"
+               tal:define="filter_name python:view.normalizer.normalize(filter);
+                           filter_id string:filter-${filter_name};
+                           filter_data python:filters[filter];
+                           filter_label python:filter_data['label'];
+                           filter_values python:filter_data['values']">
+            <label for="${filter_id}">${filter_label}</label>
+            <select class="pat-select2" data-pat-select2="width:95%">
+              <option value="*">All</option>
+             <tal:option repeat="value filter_values">
+              <option tal:define="val python:value[0];
+                                  name python:value[1]"
+                      tal:attributes="value string:.${val}">${name}</option>
+             </tal:option>
+            </select>
+          </div>
+         </tal:filter>
         </div>
 
         <div id="isotope-grid" metal:define-slot="entries">

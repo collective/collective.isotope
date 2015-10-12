@@ -15,7 +15,10 @@
 <metal:js fill-slot="javascript_head_slot">
 <metal:block define-macro="javascript_head_slot">
 <script>
-$(document).ready(function () {
+// $(document).ready(function () {
+// });
+
+$(window).load(function(evt) {
   var options = <tal:vals tal:replace="view/options">{}</tal:vals>;
   $("#isotope-grid").isotope(options);
   $("#isotope-filters").on("change", 'select', function(evt) {

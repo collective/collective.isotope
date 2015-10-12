@@ -54,7 +54,8 @@ $(document).ready(function () {
                            filter_label python:filter_data['label'];
                            filter_values python:filter_data['values']">
             <label for="${filter_id}">${filter_label}</label>
-            <select class="pat-select2" data-pat-select2="width:95%">
+            <select class="pat-select2" data-pat-select2="width:95%;
+                                                          minimumResultsForSearch:-1">
               <option value="*">All</option>
              <tal:option repeat="value filter_values">
               <option tal:define="val python:value[0];

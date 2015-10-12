@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Browser views"""
 import collections
-from itertools import chain
+from itertools import chain, imap, izip, ifilter
 import json
 # from plone import api
 from plone.app.contenttypes.browser.collection import CollectionView
@@ -72,7 +72,8 @@ def itemize(value):
 
     If value is a string type, return it
     If value is a date type, return it
-    If value is a list, tuple, set, or frozenset, return the contained values one at a time
+    If value is a list, tuple, set, or frozenset, return the contained values,
+        one at a time
     If value is a dict type, return the keys one at a time
     """
     if (not isinstance(value, basestring) and
@@ -132,6 +133,11 @@ class IsotopeViewMixin(object):
                          ],
          'column_name': ...
         }
+
+        In all cases, the unique values produced will be normalized using the
+        ID Normalizer utility registered. This allows values to be used as html
+        attributes values even if they contain spaces or other unfriendly
+        characters
         """
         filters = self.configuration.get('filter', [])
         results = {}
@@ -143,8 +149,7 @@ class IsotopeViewMixin(object):
             # skip filters with less than two unique values
             if len(raw) < 2:
                 continue
-            converted = self._get_value_labels(filter, raw)
-            values = zip(map(self.normalizer.normalize, raw), converted)
+            values = self._get_filter_values(filter, raw)
             label = self._get_filter_label(filter)
             results[filter] = {
                 'label': label,
@@ -194,16 +199,29 @@ class IsotopeViewMixin(object):
             column = term.title or term.value
         return column
 
-    def _get_value_labels(self, filter, values):
+    def _get_filter_values(self, filter, raw):
+        """return an iterable of the value/label pairs
+
+        raw is an iterable of raw values.
+
+        if no converter is registered for this filter, value and label are the
+        same, value will be normalized (made safe to use as a css class or id)
+
+        filter out value/label pairs where the label is falsy (for example, an
+            empty string or None)
+        """
         converter_name = 'collective.isotope.converter.{}'.format(
             self.normalizer.normalize(filter)
         )
         converter = queryUtility(
             IValueConverter, name=converter_name, default=None
         )
+        values = imap(self.normalizer.normalize, raw)
+        labels = raw
         if converter:
-            values = map(converter, values)
-        return values
+            labels = imap(converter, raw)
+
+        return ifilter(lambda x: x[1], izip(values, labels))
 
 
 class IsotopeCollectionView(IsotopeViewMixin, CollectionView):

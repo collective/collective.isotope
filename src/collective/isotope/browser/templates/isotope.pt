@@ -15,15 +15,29 @@
 <metal:js fill-slot="javascript_head_slot">
 <metal:block define-macro="javascript_head_slot">
 <script>
-// $(document).ready(function () {
-// });
-
+isotopeFilters = {};
+function setIsotopeFilterValues() {
+  var allFilters = $("select[id^='filter-']");
+  allFilters.each(function () {
+    isotopeFilters[$(this).attr('id')] = $(this).val()
+  })
+}
+function getIsotopeFilterValues(obj) {
+  var value = "";
+  for (var prop in obj) {
+    if (obj[prop] !== '*') {
+      value += obj[prop];
+    }
+  }
+  return value ? value : "*";
+}
 $(window).load(function(evt) {
   var options = <tal:vals tal:replace="view/options">{}</tal:vals>;
   $("#isotope-grid").isotope(options);
+  setIsotopeFilterValues();
   $("#isotope-filters").on("change", 'select', function(evt) {
-    var filterValue = evt.val;
-    $('.isotope-filter select').not(this).select2("val", "*");
+    setIsotopeFilterValues();
+    filterValue = getIsotopeFilterValues(isotopeFilters);
     $("#isotope-grid").isotope({filter: filterValue});
   });
 });
@@ -57,8 +71,7 @@ $(window).load(function(evt) {
                            filter_label python:filter_data['label'];
                            filter_values python:filter_data['values']">
             <label for="${filter_id}">${filter_label}</label>
-            <select class="pat-select2" data-pat-select2="width:95%;
-                                                          minimumResultsForSearch:-1">
+            <select id="${filter_id}" class="pat-select2" data-pat-select2="width:95%;minimumResultsForSearch:-1">
               <option value="*">All</option>
              <tal:option repeat="value filter_values">
               <option tal:define="val python:value[0];

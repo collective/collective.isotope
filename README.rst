@@ -25,7 +25,7 @@ Examples
 --------
 
 This add-on can be seen in action at the following sites:
-- No live sites use this add-on as yet, but soon some will.
+https://jazkarta.com/projects
 
 
 Documentation

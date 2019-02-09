@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
-from collective.isotope.testing import COLLECTIVE_ISOTOPE_INTEGRATION_TESTING  # noqa
+from collective.isotope.testing import (
+    COLLECTIVE_ISOTOPE_INTEGRATION_TESTING  # noqa
+)
 from plone import api
 
 import unittest2 as unittest

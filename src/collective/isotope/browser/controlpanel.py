@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-from collective.z3cform.datagridfield import DataGridFieldFactory
-from plone.app.registry.browser import controlpanel
-
-
 from ..interfaces import ICollectiveIsotopeSettings
 from collective.isotope import _
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from plone.app.registry.browser import controlpanel
 
 
 class IsotopeSettingsControlpanelForm(controlpanel.RegistryEditForm):

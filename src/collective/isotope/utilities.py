@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone import api
 
+
 def creator_converter(userid):
     """return the fullname of the user"""
     membership = api.portal.get_tool('portal_membership')

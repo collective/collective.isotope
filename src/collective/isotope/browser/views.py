@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 """Browser views"""
-import collections
-from itertools import chain, imap, izip, ifilter
-import json
+from ..interfaces import ICollectiveIsotopeLayoutSettings
+from ..interfaces import ICollectiveIsotopeSettings
+from ..interfaces import ICollectiveIsotopeViewSettings
+from ..interfaces import IValueConverter
+from collective.isotope import _
+from itertools import chain
+from itertools import ifilter
+from itertools import imap
+from itertools import izip
 # from plone import api
 from plone.app.contenttypes.browser.collection import CollectionView
 from plone.app.contenttypes.browser.folder import FolderView
@@ -10,19 +16,19 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from plone.z3cform.layout import wrap_form
 from Products.statusmessages.interfaces import IStatusMessage
-from z3c.form import form, field, button
-from zope.annotation.interfaces import IAnnotations, IAttributeAnnotatable
-from zope.cachedescriptors.property import Lazy as lazy_property
+from z3c.form import button
+from z3c.form import field
+from z3c.form import form
+from zope.annotation.interfaces import IAnnotations
+from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.cachedescriptors.method import cachedIn
-from zope.component import getUtility, queryUtility
+from zope.cachedescriptors.property import Lazy as lazy_property
+from zope.component import getUtility
+from zope.component import queryUtility
 from zope.schema.interfaces import IVocabularyFactory
 
-from ..interfaces import ICollectiveIsotopeSettings
-from ..interfaces import ICollectiveIsotopeLayoutSettings
-from ..interfaces import ICollectiveIsotopeViewSettings
-from ..interfaces import IValueConverter
-
-from collective.isotope import _
+import collections
+import json
 
 
 ISOTOPE_CONFIGURATION_KEY = 'collective.isotope.configuration'

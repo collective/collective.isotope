@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from collective.isotope.testing import COLLECTIVE_ISOTOPE_ACCEPTANCE_TESTING  # noqa
+from collective.isotope.testing import (
+    COLLECTIVE_ISOTOPE_ACCEPTANCE_TESTING  # noqa
+)
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
 

@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 """Interfaces: control panel settings, browser layers &c."""
-from collective.z3cform.datagridfield.registry import DictRow
+from collective.isotope import _
 from collective.z3cform.datagridfield.interfaces import AttributeNotFoundError
+from collective.z3cform.datagridfield.registry import DictRow
 from plone.registry import field
 from z3c.form.interfaces import NO_VALUE
-from zope.interface import Interface, implements
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope import schema
-
-
-from collective.isotope import _
+from zope.interface import implements
+from zope.interface import Interface
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 
 class ICollectiveIsotopeLayer(IDefaultBrowserLayer):

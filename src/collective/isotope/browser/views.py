@@ -6,11 +6,6 @@ from ..interfaces import ICollectiveIsotopeViewSettings
 from ..interfaces import IValueConverter
 from collective.isotope import _
 from itertools import chain
-from itertools import ifilter
-from itertools import imap
-from itertools import izip
-
-# from plone import api
 from plone.app.contenttypes.browser.collection import CollectionView
 from plone.app.contenttypes.browser.folder import FolderView
 from plone.i18n.normalizer.interfaces import IIDNormalizer
@@ -30,6 +25,7 @@ from zope.schema.interfaces import IVocabularyFactory
 
 import collections
 import json
+import six.moves
 
 
 ISOTOPE_CONFIGURATION_KEY = 'collective.isotope.configuration'
@@ -198,7 +194,8 @@ class IsotopeViewMixin(object):
         return self._get_column_label(column, 'sorts')
 
     def _get_column_label(self, column, type_):
-        """return the label for a given column name from the named vocabulary"""
+        """return the label for a given column name from the named vocabulary
+        """
         name = 'collective.isotope.vocabularies.available_{}'.format(type_)
         factory = queryUtility(IVocabularyFactory, name=name, default=None)
         if factory is not None:
@@ -223,12 +220,12 @@ class IsotopeViewMixin(object):
         converter = queryUtility(
             IValueConverter, name=converter_name, default=None
         )
-        values = imap(self.normalizer.normalize, raw)
+        values = six.moves.map(self.normalizer.normalize, raw)
         labels = raw
         if converter:
-            labels = imap(converter, raw)
+            labels = six.moves.map(converter, raw)
 
-        return ifilter(lambda x: x[1], izip(values, labels))
+        return six.moves.filter(lambda x: x[1], six.moves.zip(values, labels))
 
 
 class IsotopeCollectionView(IsotopeViewMixin, CollectionView):

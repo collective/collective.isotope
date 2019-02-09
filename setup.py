@@ -19,13 +19,16 @@ long_description = (
 setup(
     name='collective.isotope',
     version='0.1-dev',
-    description="A view for folders and collections using the Isotope jquery plugin",
+    description="Plone view for folders and collections using the Isotope "
+                "jquery plugin",
     long_description=long_description,
     # Get more from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: Plone",
         "Framework :: Plone :: 5.0",
+        "Framework :: Plone :: 5.2",
+        "Framework :: Plone :: 5.2",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
         "Operating System :: OS Independent",
@@ -42,9 +45,10 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
+        'collective.z3cform.datagridfield',
         'plone.api',
         'setuptools',
-        'collective.z3cform.datagridfield',
+        'six',
     ],
     extras_require={
         'test': [

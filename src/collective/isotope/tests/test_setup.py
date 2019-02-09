@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
 from collective.isotope.testing import (
-    COLLECTIVE_ISOTOPE_INTEGRATION_TESTING  # noqa
+    COLLECTIVE_ISOTOPE_INTEGRATION_TESTING,  # noqa
 )
 from plone import api
 
@@ -20,12 +20,15 @@ class TestSetup(unittest.TestCase):
 
     def test_product_installed(self):
         """Test if collective.isotope is installed with portal_quickinstaller."""
-        self.assertTrue(self.installer.isProductInstalled('collective.isotope'))
+        self.assertTrue(
+            self.installer.isProductInstalled('collective.isotope')
+        )
 
     def test_browserlayer(self):
         """Test that ICollectiveIsotopeLayer is registered."""
         from collective.isotope.interfaces import ICollectiveIsotopeLayer
         from plone.browserlayer import utils
+
         self.assertIn(ICollectiveIsotopeLayer, utils.registered_layers())
 
 
@@ -40,10 +43,13 @@ class TestUninstall(unittest.TestCase):
 
     def test_product_uninstalled(self):
         """Test if collective.isotope is cleanly uninstalled."""
-        self.assertFalse(self.installer.isProductInstalled('collective.isotope'))
+        self.assertFalse(
+            self.installer.isProductInstalled('collective.isotope')
+        )
 
     def test_browserlayer_removed(self):
         """Test that ICollectiveIsotopeLayer is removed."""
         from collective.isotope.interfaces import ICollectiveIsotopeLayer
         from plone.browserlayer import utils
+
         self.assertNotIn(ICollectiveIsotopeLayer, utils.registered_layers())

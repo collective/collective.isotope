@@ -22,6 +22,7 @@ class IValueConverter(Interface):
     metadata column into a human readable value suitable for presentation in a
     UI.
     """
+
     def convert(value):
         """Convert a give value into a human readable value
 
@@ -49,8 +50,11 @@ class ImportableTextDictRow(DictRow, schema.MinMaxLen):
             if isinstance(ftype, tuple):
                 ftype = ftype[0]
             # Perform a naive type coercion
-            if (fvalue is not NO_VALUE and
-                    ftype is not None and not isinstance(fvalue, ftype)):
+            if (
+                fvalue is not NO_VALUE
+                and ftype is not None
+                and not isinstance(fvalue, ftype)
+            ):
                 if ftype is bool and fvalue.lower() == 'false':
                     fvalue = False
                 try:
@@ -70,7 +74,7 @@ class IFilterSchema(Interface):
         description=_(u'Enter the name of a catalog metadata column'),
         vocabulary='collective.isotope.vocabularies.friendly_columns',
         required=False,
-        missing_value=u''
+        missing_value=u'',
     )
     label = field.TextLine(
         title=_(u'Label'),
@@ -78,50 +82,58 @@ class IFilterSchema(Interface):
             u'If desired, enter the human-readable label for this column'
         ),
         required=False,
-        missing_value=u''
+        missing_value=u'',
     )
 
 
 class ICollectiveIsotopeFilterSettings(Interface):
     """Settings to control filtering options"""
+
     available_filters = schema.List(
         title=_(u'Available Filters'),
-        description=_(u'List the filters that will be available for Istotope '
-                      u'views throughout your site.'),
+        description=_(
+            u'List the filters that will be available for Istotope '
+            u'views throughout your site.'
+        ),
         value_type=ImportableTextDictRow(
-            title=_(u'Filter'),
-            schema=IFilterSchema
-        )
+            title=_(u'Filter'), schema=IFilterSchema
+        ),
     )
 
     available_sorts = schema.List(
         title=_(u'Available Sorts'),
-        description=_(u'List the sortable attributes that will be available '
-                      u'for Istotope views throughout your site.'),
+        description=_(
+            u'List the sortable attributes that will be available '
+            u'for Istotope views throughout your site.'
+        ),
         value_type=ImportableTextDictRow(
-            title=_(u'Sort'),
-            schema=IFilterSchema
-        )
+            title=_(u'Sort'), schema=IFilterSchema
+        ),
     )
 
 
 class ICollectiveIsotopeLayoutSettings(Interface):
     """Settings for the options that control the javascript Isotope library
     """
+
     layoutMode = schema.Choice(
         title=_(u'Layout Mode'),
-        description=_(u'Select the default layout mode to be used on all '
-                      u'isotope views throughout your website'),
+        description=_(
+            u'Select the default layout mode to be used on all '
+            u'isotope views throughout your website'
+        ),
         values=[u'masonry', u'fitRows', u'vertical'],
-        default=u'masonry'
+        default=u'masonry',
     )
 
     percentPosition = schema.Bool(
         title=_(u'Use percentPosition'),
-        description=_(u'Set the horizontal position of items by percent '
-                      u'rather than pixel size. This works best with items '
-                      u'that are sized by percentage. On by default'),
-        default=True
+        description=_(
+            u'Set the horizontal position of items by percent '
+            u'rather than pixel size. This works best with items '
+            u'that are sized by percentage. On by default'
+        ),
+        default=True,
     )
 
 
@@ -133,24 +145,29 @@ class ICollectiveIsotopeSettings(
 
 class ICollectiveIsotopeViewSettings(Interface):
     """Settings for configuration of individual views"""
+
     filter = schema.List(
         title=_(u'Filtering'),
-        description=_(u'Select the ttributes on which users will be able to '
-                      u'filter the items listed in this view. If no values '
-                      u'are selected, user filtering will be disabled'),
+        description=_(
+            u'Select the ttributes on which users will be able to '
+            u'filter the items listed in this view. If no values '
+            u'are selected, user filtering will be disabled'
+        ),
         required=False,
         value_type=schema.Choice(
-            vocabulary='collective.isotope.vocabularies.available_filters',
-        )
+            vocabulary='collective.isotope.vocabularies.available_filters'
+        ),
     )
 
     sort = schema.List(
         title=_(u'Sorting'),
-        description=_(u'Select the attributes on which users will be able to '
-                      u'sort the items listed in this view. If no value is '
-                      u'selected, user sorting will be disabled.'),
+        description=_(
+            u'Select the attributes on which users will be able to '
+            u'sort the items listed in this view. If no value is '
+            u'selected, user sorting will be disabled.'
+        ),
         required=False,
         value_type=schema.Choice(
             vocabulary='collective.isotope.vocabularies.available_sorts'
-        )
+        ),
     )

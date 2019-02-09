@@ -9,6 +9,7 @@ from itertools import chain
 from itertools import ifilter
 from itertools import imap
 from itertools import izip
+
 # from plone import api
 from plone.app.contenttypes.browser.collection import CollectionView
 from plone.app.contenttypes.browser.folder import FolderView
@@ -38,7 +39,9 @@ _marker = object()
 class IsotopeViewConfigurationForm(form.Form):
     fields = field.Fields(ICollectiveIsotopeViewSettings)
     label = _(u"Isotope View Configuration")
-    description = _(u"Configuration of layout, filters, and sorting for this view")
+    description = _(
+        u"Configuration of layout, filters, and sorting for this view"
+    )
 
     def getContent(self):
         annotations = IAnnotations(self.context)
@@ -60,6 +63,7 @@ class IsotopeViewConfigurationForm(form.Form):
         messages = IStatusMessage(self.request)
         messages.add(_(u"Your configuration has been saved"), type=u"info")
 
+
 IsotopeConfigurationView = wrap_form(IsotopeViewConfigurationForm)
 
 
@@ -73,6 +77,7 @@ def call_or_attr(obj, name):
         value = value()
     return value
 
+
 def itemize(value):
     """return value one item at a time from a generator
 
@@ -82,8 +87,9 @@ def itemize(value):
         one at a time
     If value is a dict type, return the keys one at a time
     """
-    if (not isinstance(value, basestring) and
-            isinstance(value, collections.Iterable)):
+    if not isinstance(value, basestring) and isinstance(
+        value, collections.Iterable
+    ):
         for item in value:
             yield item
     else:
@@ -98,9 +104,7 @@ class IsotopeViewMixin(object):
     def settings_dict(self):
         registry = getUtility(IRegistry)
         isotope_settings = registry.forInterface(ICollectiveIsotopeSettings)
-        settings = {
-            'itemSelector': '.isotope-item',
-        }
+        settings = {'itemSelector': '.isotope-item'}
         names = ICollectiveIsotopeLayoutSettings.names()
         for name in names:
             value = getattr(isotope_settings, name, _marker)
@@ -157,10 +161,7 @@ class IsotopeViewMixin(object):
                 continue
             values = self._get_filter_values(filter, raw)
             label = self._get_filter_label(filter)
-            results[filter] = {
-                'label': label,
-                'values': values,
-            }
+            results[filter] = {'label': label, 'values': values}
         return results
 
     def filters_for_item(self, result):

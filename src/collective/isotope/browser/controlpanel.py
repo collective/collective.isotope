@@ -9,8 +9,10 @@ class IsotopeSettingsControlpanelForm(controlpanel.RegistryEditForm):
 
     schema = ICollectiveIsotopeSettings
     label = _(u'Isotope View Settings')
-    description = _(u'Site-wide settings to control the Isotope View for '
-                    u'collections and folders')
+    description = _(
+        u'Site-wide settings to control the Isotope View for '
+        u'collections and folders'
+    )
 
     def updateFields(self):
         super(IsotopeSettingsControlpanelForm, self).updateFields()

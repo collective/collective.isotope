@@ -26,13 +26,13 @@ COLLECTIVE_ISOTOPE_FIXTURE = CollectiveIsotopeLayer()
 
 COLLECTIVE_ISOTOPE_INTEGRATION_TESTING = IntegrationTesting(
     bases=(COLLECTIVE_ISOTOPE_FIXTURE,),
-    name='CollectiveIsotopeLayer:IntegrationTesting'
+    name='CollectiveIsotopeLayer:IntegrationTesting',
 )
 
 
 COLLECTIVE_ISOTOPE_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(COLLECTIVE_ISOTOPE_FIXTURE,),
-    name='CollectiveIsotopeLayer:FunctionalTesting'
+    name='CollectiveIsotopeLayer:FunctionalTesting',
 )
 
 
@@ -40,7 +40,7 @@ COLLECTIVE_ISOTOPE_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
         COLLECTIVE_ISOTOPE_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE
+        z2.ZSERVER_FIXTURE,
     ),
-    name='CollectiveIsotopeLayer:AcceptanceTesting'
+    name='CollectiveIsotopeLayer:AcceptanceTesting',
 )

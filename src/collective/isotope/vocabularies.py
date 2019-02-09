@@ -7,31 +7,33 @@ from zope.component import getUtility
 from zope.schema.vocabulary import SimpleVocabulary
 
 
-COLUMN_BLACKLIST = set([
-    'total_comments',
-    'commentators',
-    'exclude_from_nav',
-    'id',
-    'cmf_uid',
-    'Description',
-    'listCreators',
-    'is_folderish',
-    'sync_uid',
-    'getId',
-    'getRemoteUrl',
-    'location',
-    'portal_type',
-    'expires',
-    'last_comment_date',
-    'getObjSize',
-    'UID',
-    'effective',
-    'getIcon',
-    'created',
-    'modified',
-    'meta_type',
-    'in_response_to',
-])
+COLUMN_BLACKLIST = set(
+    [
+        'total_comments',
+        'commentators',
+        'exclude_from_nav',
+        'id',
+        'cmf_uid',
+        'Description',
+        'listCreators',
+        'is_folderish',
+        'sync_uid',
+        'getId',
+        'getRemoteUrl',
+        'location',
+        'portal_type',
+        'expires',
+        'last_comment_date',
+        'getObjSize',
+        'UID',
+        'effective',
+        'getIcon',
+        'created',
+        'modified',
+        'meta_type',
+        'in_response_to',
+    ]
+)
 
 
 class MetadataColumnVocabulary(object):
@@ -52,6 +54,7 @@ class MetadataColumnVocabulary(object):
         possible = column_name_set - self.blacklist
         items = sorted([(name.decode('utf8'), name) for name in possible])
         return SimpleVocabulary.fromItems(items)
+
 
 FriendlyColumnVocabularyFactory = MetadataColumnVocabulary(COLUMN_BLACKLIST)
 

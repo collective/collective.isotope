@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Vocabularies to use with collective.isotope"""
+import six
+from binascii import b2a_qp
 from plone import api
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.utils import safe_unicode
@@ -51,9 +53,17 @@ class MetadataColumnVocabulary(object):
     def __call__(self, context):
         portal_catalog = api.portal.get_tool('portal_catalog')
         column_name_set = set(portal_catalog.schema())
+        terms = []
         possible = column_name_set - self.blacklist
-        items = sorted([(name.decode('utf8'), name) for name in possible])
-        return SimpleVocabulary.fromItems(items)
+        items = sorted(list(possible))
+        for item in items:
+            if six.PY2 and isinstance(item, six.binary_type):
+                item = item.decode('utf8')
+            terms.append(SimpleVocabulary.createTerm(
+                item, b2a_qp(item.encode('utf-8')), item
+            ))
+
+        return SimpleVocabulary(terms)
 
 
 FriendlyColumnVocabularyFactory = MetadataColumnVocabulary(COLUMN_BLACKLIST)
@@ -74,8 +84,15 @@ class FilterFieldVocabulary(object):
             title = row.get('label')
             if not title:
                 title = value
+            if six.PY2:
+                if isinstance(value, six.binary_type):
+                    value = value.decode('utf8')
+                if isinstance(title, six.binary_type):
+                    title = title.decode('utf8')
             terms.append(
-                SimpleVocabulary.createTerm(value, value, safe_unicode(title))
+                SimpleVocabulary.createTerm(
+                    value, b2a_qp(value.encode('utf-8')), title
+                )
             )
         return SimpleVocabulary(terms)
 

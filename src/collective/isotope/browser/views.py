@@ -25,7 +25,7 @@ from zope.schema.interfaces import IVocabularyFactory
 
 import collections
 import json
-import six.moves
+import six
 
 
 ISOTOPE_CONFIGURATION_KEY = 'collective.isotope.configuration'
@@ -83,7 +83,7 @@ def itemize(value):
         one at a time
     If value is a dict type, return the keys one at a time
     """
-    if not isinstance(value, basestring) and isinstance(
+    if not isinstance(value, six.string_types) and isinstance(
         value, collections.Iterable
     ):
         for item in value:

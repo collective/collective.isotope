@@ -150,7 +150,7 @@ class ICollectiveIsotopeViewSettings(Interface):
     filter = schema.List(
         title=_(u'Filtering'),
         description=_(
-            u'Select the ttributes on which users will be able to '
+            u'Select the attributes on which users will be able to '
             u'filter the items listed in this view. If no values '
             u'are selected, user filtering will be disabled'
         ),

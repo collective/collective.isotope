@@ -27,7 +27,7 @@ before_install:
   - echo "[buildout]" > $HOME/.buildout/default.cfg
   - echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
   - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-  - bin/pip install -r requirements.txt
+  - bin/pip install -r $HOME/requirements.txt
   - cp test_plone$PLONE_VERSION.cfg buildout.cfg
 install:
   - bin/buildout -N -t 3 code-analysis:return-status-codes=True annotate

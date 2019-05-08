@@ -18,7 +18,7 @@ long_description = (
 
 setup(
     name='collective.isotope',
-    version='0.1-dev',
+    version='0.1',
     description="Plone view for folders and collections using the Isotope "
                 "jquery plugin",
     long_description=long_description,

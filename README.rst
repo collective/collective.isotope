@@ -11,15 +11,6 @@ This package provides selectable views for Collections and Folders using the
 
 .. _isotope: http://isotope.metafizzy.co/
 
-.. warning:: This package is NOT READY FOR PRODUCTION IN ANY WAY!
-
-
-
-Features
---------
-
-- None so far (early pre-alpha)
-
 
 Examples
 --------

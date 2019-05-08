@@ -4,7 +4,6 @@ import six
 from binascii import b2a_qp
 from plone import api
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.utils import safe_unicode
 from zope.component import getUtility
 from zope.schema.vocabulary import SimpleVocabulary
 

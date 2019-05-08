@@ -52,9 +52,9 @@ class ImportableTextDictRow(DictRow, schema.MinMaxLen):
                 ftype = ftype[0]
             # Perform a naive type coercion
             if (
-                fvalue is not NO_VALUE
-                and ftype is not None
-                and not isinstance(fvalue, ftype)
+                fvalue is not NO_VALUE and
+                ftype is not None and
+                not isinstance(fvalue, ftype)
             ):
                 if ftype is bool and fvalue.lower() == 'false':
                     fvalue = False

@@ -3,7 +3,6 @@
 from collective.isotope.testing import (
     COLLECTIVE_ISOTOPE_INTEGRATION_TESTING,  # noqa
 )
-from plone import api
 from Products.CMFPlone.utils import get_installer
 try:
     import unittest

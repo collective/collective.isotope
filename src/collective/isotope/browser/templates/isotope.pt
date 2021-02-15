@@ -19,8 +19,8 @@ isotopeFilters = {};
 function setIsotopeFilterValues() {
   var allFilters = $("select[id^='filter-']");
   allFilters.each(function () {
-    isotopeFilters[$(this).attr('id')] = $(this).val()
-  })
+    isotopeFilters[$(this).attr('id')] = $(this).val();
+  });
 }
 function getIsotopeFilterValues(obj) {
   var value = "";
@@ -31,15 +31,47 @@ function getIsotopeFilterValues(obj) {
   }
   return value ? value : "*";
 }
-$(window).load(function(evt) {
+function getHashFilter() {
+  // get filter=filterName
+  var matches = location.hash.match( /filter=([^&]+)/i );
+  var hashFilter = matches && matches[1];
+  return hashFilter && decodeURIComponent( hashFilter );
+}
+var isIsotopeInit = false;
+
+function onHashchange() {
+  var hashFilter = getHashFilter();
+  if ( !hashFilter && isIsotopeInit ) {
+    return;
+  }
+  isIsotopeInit = true;
   var options = <tal:vals tal:replace="view/options">{}</tal:vals>;
+  if (hashFilter) {
+    options.filter = hashFilter;
+    var filter_values = hashFilter.substr(1).split('.');
+    $.each(filter_values, function (i, v) {
+      var val = '.' + v;
+      $("select[id^='filter-'] option").each(function (j, e) {
+        if (e.value == val) {
+          var $sel = $(e).parent();
+          $sel.val(val).trigger("change");
+        }
+      });
+    });
+  }
   $("#isotope-grid").isotope(options);
+}
+
+$(window).load(function(evt) {
   setIsotopeFilterValues();
   $("#isotope-filters").on("change", 'select', function(evt) {
     setIsotopeFilterValues();
-    filterValue = getIsotopeFilterValues(isotopeFilters);
-    $("#isotope-grid").isotope({filter: filterValue});
+    var filterValue = getIsotopeFilterValues(isotopeFilters);
+    location.hash = 'filter=' + encodeURIComponent(filterValue);
   });
+
+  $(window).on('hashchange', onHashchange);
+  onHashchange();
 });
 </script>
 </metal:block>
